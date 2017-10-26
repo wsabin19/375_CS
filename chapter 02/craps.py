@@ -14,25 +14,37 @@
 # by Mr. Ciccolo
 
 import random
-
+winnings = 100
+bet = 0
 
 def main():
-    display_welcome()
+    global winnings, bet
 
+    display_welcome()
     play_again = True
     while play_again:
+        print("You have", winnings,"dollars")
+        print()
+        bet = placebet()
         total = roll_dice()
         if total == 7 or total == 11:
             print("You win!")
+            winnings = winnings + bet
         elif total == 2 or total == 3 or total == 12:
             print("You lose!")
+            winnings = winnings - bet
         else:
             re_roll(total)
 
         print() # Blank line for spacing
-        play_again = (input("Press enter to play another round or type 'N' to quit ") == '')
-        clear_screen()
+        print("You have", winnings,"dollars.")
 
+        if winnings < 5:    #Here we end the Game if the player runs out of money
+            print("You don't have enough money to play, better luck next time!")
+            play_again = False
+        else:
+            play_again = (input("Press enter to play another round or type 'N' to quit ") == '')
+            clear_screen()
 
 def clear_screen():
     for i in range(20):
@@ -47,6 +59,19 @@ def display_welcome():
     print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
     print()
 
+
+
+def placebet():
+    # function is to validate the bet the player makes.
+    raw_bet = eval(input("You have %s. What would you like to bet? ($5-$%s)" % (winnings, winnings)))
+    if raw_bet < 5:
+        print("Sorry! The minimum bet is $5, so we'll use that")
+        raw_bet = 5
+    elif raw_bet > winnings:
+        print("Sorry! Your maximum bet is",winnings,"at this time, so we'll use that.")
+        raw_bet = winnings
+    #Above we set the minimum bet to 5, and the maximum bet to the amount of money the player has
+    return raw_bet
 
 def roll_dice():
     input("Press Enter to roll the dice...") # We don't do anything with the input, we're just using it to pause the game
@@ -65,6 +90,7 @@ def roll_dice():
 
 
 def re_roll(point):
+    global winnings, bet
     print("You have to keep rolling until you get another", point)
     print() # Blank line for spacing
 
@@ -74,8 +100,9 @@ def re_roll(point):
 
     if total == point:
         print("You win!")
+        winnings = winnings + bet
     else:
         print("You lose!")
-
+        winnings = winnings - bet
 
 main()
