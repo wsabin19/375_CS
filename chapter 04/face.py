@@ -2,7 +2,7 @@ from graphics import *
 
 
 def main():
-    win = GraphWin("picture", 800, 800)
+    win = GraphWin("picture", 400, 400)
     win.setCoords(0, 0, 20, 20)
     ground = Rectangle(Point(0, 0),Point(20, 3))
     ground.setFill(color_rgb(102, 51, 0))
